@@ -40,9 +40,45 @@ def add_one(first, last, email):
     conn.close()
 
 
+# add many records to db
+def add_many(list):
+    conn = sq.connect('my_db.db')
+    curs = conn.cursor()
+    curs.executemany("INSERT INTO customers VALUES (?,?,?)", (list))
+    # commit our command
+    conn.commit()
+    # close out connection
+    conn.close()
+
+
+# delete record from db
+def delete_one(id):
+    conn = sq.connect('my_db.db')
+    curs = conn.cursor()
+    curs.execute("DELETE FROM customers WHERE rowid = (?)", (id))
+    # commit our command
+    conn.commit()
+    # close out connection
+    conn.close()
+
 # data_one = curs.fetchone()  # get first item in table
 # data_many = curs.fetchmany(3)
   # returns python list
+
+
+def email(email):
+    conn = sq.connect('my_db.db')
+    curs = conn.cursor()
+    curs.execute("SELECT rowid, * FROM customers WHERE email = (?)", (email,))
+
+    data = curs.fetchall()
+    for item in data:
+        print(item)
+
+    # commit our command
+    conn.commit()
+    # close out connection
+    conn.close()
 
 
 # API
